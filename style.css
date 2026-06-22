@@ -1,37 +1,93 @@
 body {
-  font-family: Arial;
-  background: #0f172a;
-  color: white;
   margin: 0;
+  font-family: Arial;
+  background: #0b0f1a;
+  color: white;
 }
 
-header {
-  text-align: center;
-  padding: 20px;
-}
-
-.container {
+.app {
   display: flex;
-  justify-content: space-around;
+  height: 100vh;
+}
+
+/* 左侧栏 */
+.sidebar {
+  width: 220px;
+  background: #111827;
   padding: 20px;
+}
+
+.logo {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.menu {
+  display: block;
+  width: 100%;
+  margin: 5px 0;
+  padding: 10px;
+  background: #1f2937;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.menu.active {
+  background: #3b82f6;
+}
+
+.upload-box {
+  margin-top: 20px;
+  padding: 10px;
+  background: #1f2937;
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* 主区域 */
+.main {
+  flex: 1;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+/* 内容区 */
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
+}
+
+.card {
+  background: #111827;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+canvas, img {
+  width: 100%;
+  border-radius: 10px;
 }
 
 .panel {
   background: #111827;
   padding: 15px;
-  border-radius: 12px;
-  width: 30%;
+  border-radius: 10px;
 }
 
-canvas {
-  width: 100%;
-  border: 1px solid #333;
+.score {
+  font-size: 40px;
+  text-align: center;
+  color: #22c55e;
+}
+
+.tips {
   margin-top: 10px;
-}
-
-#scoreBox {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 10px 0;
+  font-size: 14px;
+  color: #9ca3af;
 }
