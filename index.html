@@ -2,26 +2,43 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>DIY Maker AI</title>
+  <title>DIY Maker AI - 拼豆优化器</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h2>🧩 DIY Maker AI - 手工制作决策器</h2>
+<header>
+  <h2>🧩 DIY Maker AI - 拼豆优化器</h2>
+  <p>上传图片 → AI优化 → 判断是否可制作</p>
+</header>
 
-<input type="file" id="upload">
+<div class="container">
 
-<div class="panel">
+  <!-- 左侧：上传 -->
+  <div class="panel">
+    <h3>📤 上传图片</h3>
+    <input type="file" id="upload">
 
-  <div>
-    <h3>📊 成功率分析</h3>
-    <div id="score">等待上传图片</div>
-    <div id="challenge"></div>
-    <div id="tips"></div>
+    <canvas id="inputCanvas"></canvas>
   </div>
 
-  <canvas id="canvas"></canvas>
+  <!-- 中间：分析 -->
+  <div class="panel">
+    <h3>📊 AI分析</h3>
+
+    <div id="scoreBox">等待上传...</div>
+    <div id="tips"></div>
+
+    <div id="stats"></div>
+  </div>
+
+  <!-- 右侧：优化结果 -->
+  <div class="panel">
+    <h3>✨ AI优化结果</h3>
+
+    <canvas id="outputCanvas"></canvas>
+  </div>
 
 </div>
 
