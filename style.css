@@ -1,33 +1,37 @@
 body {
   font-family: Arial;
+  background: #0f172a;
+  color: white;
+  margin: 0;
+}
+
+header {
   text-align: center;
-  background: #f5f5f5;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  gap: 20px;
 }
 
 .panel {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 20px;
-}
-
-#score {
-  font-size: 22px;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-#challenge {
-  margin-top: 10px;
-  color: #444;
-}
-
-#tips {
-  margin-top: 10px;
-  color: #777;
-  white-space: pre-line;
+  background: #111827;
+  padding: 15px;
+  border-radius: 12px;
+  width: 30%;
 }
 
 canvas {
-  border: 1px solid #ccc;
+  width: 100%;
+  border: 1px solid #333;
+  margin-top: 10px;
+}
+
+#scoreBox {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0;
 }
