@@ -2,20 +2,36 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <title>拼豆设计器</title>
+  <title>像素拼豆设计器</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h2>🧩 拼豆设计器</h2>
+<header>
+  <h2>🧩 像素拼豆设计器</h2>
 
-<div class="toolbar">
-  <div id="palette"></div>
-  <button onclick="clearGrid()">清空</button>
-  <button onclick="exportImage()">导出PNG</button>
-</div>
+  <div class="actions">
+    <input type="file" id="upload" accept="image/*">
+    <button onclick="clearGrid()">清空</button>
+    <button onclick="exportPNG()">导出PNG</button>
+    <button onclick="saveProject()">保存作品</button>
+  </div>
+</header>
 
-<div id="grid"></div>
+<main>
+  <aside>
+    <h3>🎨 调色板</h3>
+    <div id="palette"></div>
+
+    <h3>📁 作品</h3>
+    <div id="projects"></div>
+  </aside>
+
+  <section>
+    <div id="grid"></div>
+  </section>
+</main>
 
 <canvas id="canvas" style="display:none;"></canvas>
 
