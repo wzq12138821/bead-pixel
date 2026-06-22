@@ -1,39 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <title>像素拼豆设计器</title>
+  <meta charset="UTF-8">
+  <title>DIY Maker AI</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-  <h2>🧩 像素拼豆设计器</h2>
+<h2>🧩 DIY Maker AI - 手工制作决策器</h2>
 
-  <div class="actions">
-    <input type="file" id="upload" accept="image/*">
-    <button onclick="clearGrid()">清空</button>
-    <button onclick="exportPNG()">导出PNG</button>
-    <button onclick="saveProject()">保存作品</button>
+<input type="file" id="upload">
+
+<div class="panel">
+
+  <div>
+    <h3>📊 成功率分析</h3>
+    <div id="score">等待上传图片</div>
+    <div id="challenge"></div>
+    <div id="tips"></div>
   </div>
-</header>
 
-<main>
-  <aside>
-    <h3>🎨 调色板</h3>
-    <div id="palette"></div>
+  <canvas id="canvas"></canvas>
 
-    <h3>📁 作品</h3>
-    <div id="projects"></div>
-  </aside>
-
-  <section>
-    <div id="grid"></div>
-  </section>
-</main>
-
-<canvas id="canvas" style="display:none;"></canvas>
+</div>
 
 <script src="app.js"></script>
 </body>
