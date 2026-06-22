@@ -8,7 +8,6 @@ const tipsBox = document.getElementById("tips");
 
 const size = 40;
 
-// 拼豆色卡
 const palette = [
   "#ffffff","#000000",
   "#ef4444","#f97316",
@@ -17,20 +16,45 @@ const palette = [
   "#a855f7","#ec4899"
 ];
 
-let img = null;
+// ✅ 确保 DOM ready
+window.onload = () => {
+  bindUpload();
+};
 
-upload.addEventListener("change", e => {
-  img = new Image();
-  img.onload = () => {
-    origin.src = img.src;
-    optimize();
-  };
-  img.src = URL.createObjectURL(e.target.files[0]);
-});
+function bindUpload() {
 
-function optimize() {
+  upload.addEventListener("change", (e) => {
 
-  if (!img) return;
+    console.log("文件已选择"); // 👈 用于调试
+
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(evt) {
+
+      console.log("图片加载成功");
+
+      const img = new Image();
+
+      img.onload = function () {
+        origin.src = img.src;
+        analyze(img);
+      };
+
+      img.src = evt.target.result;
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+// =========================
+// 核心分析
+// =========================
+
+function analyze(img) {
 
   canvas.width = size;
   canvas.height = size;
@@ -42,31 +66,43 @@ function optimize() {
   let usedColors = new Set();
   let complexity = 0;
 
-  for (let i = 0; i < data.length; i += 4) {
+  let idx = 0;
 
-    let c = matchColor(data[i], data[i+1], data[i+2]);
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
 
-    usedColors.add(c);
+      let i = idx * 4;
 
-    if (c !== "#ffffff") complexity++;
+      let c = matchColor(
+        data[i],
+        data[i+1],
+        data[i+2]
+      );
+
+      usedColors.add(c);
+
+      if (c !== "#ffffff") complexity++;
+
+      ctx.fillStyle = c;
+      ctx.fillRect(x, y, 1, 1);
+
+      idx++;
+    }
   }
 
   // =========================
-  // 🧠 成功率模型
+  // 成功率模型
   // =========================
 
   let colorCount = usedColors.size;
 
-  let score = 100;
-  score -= colorCount * 4;
-  score -= complexity * 0.1;
-
+  let score = 100 - colorCount * 4 - complexity * 0.1;
   score = Math.max(0, Math.round(score));
 
   rate.innerText = score + "%";
 
   // =========================
-  // 💡 AI建议系统
+  // AI建议
   // =========================
 
   let tips = [];
@@ -76,42 +112,22 @@ function optimize() {
   }
 
   if (complexity > 500) {
-    tips.push("建议简化细节结构");
+    tips.push("建议简化图案细节");
   }
 
-  if (score < 60) {
-    tips.push("⚠️ 不建议直接制作，需优化");
-  } else {
-    tips.push("✅ 可以制作");
-  }
+  tips.push(score > 60 ? "✅ 可以制作" : "⚠️ 建议优化后再做");
 
   tipsBox.innerHTML = tips.join("<br>");
-
-  // =========================
-  // 🎨 输出优化图
-  // =========================
-
-  let idx = 0;
-
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-
-      let i = idx * 4;
-
-      let c = matchColor(data[i], data[i+1], data[i+2]);
-
-      ctx.fillStyle = c;
-      ctx.fillRect(x, y, 1, 1);
-
-      idx++;
-    }
-  }
 }
+
+// =========================
+// 颜色匹配
+// =========================
 
 function matchColor(r,g,b) {
 
   let best = palette[0];
-  let bestD = 999999;
+  let bestD = Infinity;
 
   for (let c of palette) {
 
