@@ -1,0 +1,37 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.toolbar {
+  margin: 10px;
+}
+
+#palette {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.color {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  margin: 2px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(20, 20px);
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cell {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #eee;
+  box-sizing: border-box;
+  cursor: pointer;
+}
