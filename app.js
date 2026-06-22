@@ -16,54 +16,52 @@ const palette = [
   "#a855f7","#ec4899"
 ];
 
-// ✅ 确保 DOM ready
-window.onload = () => {
-  bindUpload();
-};
+let img = null;
 
-function bindUpload() {
+// =========================
+// 上传图片
+// =========================
 
-  upload.addEventListener("change", (e) => {
+upload.addEventListener("change", (e) => {
 
-    console.log("文件已选择"); // 👈 用于调试
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const file = e.target.files[0];
-    if (!file) return;
+  const reader = new FileReader();
 
-    const reader = new FileReader();
+  reader.onload = function(evt) {
 
-    reader.onload = function(evt) {
+    img = new Image();
 
-      console.log("图片加载成功");
-
-      const img = new Image();
-
-      img.onload = function () {
-        origin.src = img.src;
-        analyze(img);
-      };
-
-      img.src = evt.target.result;
+    img.onload = () => {
+      origin.src = img.src;
+      analyze();
     };
 
-    reader.readAsDataURL(file);
-  });
-}
+    img.src = evt.target.result;
+  };
+
+  reader.readAsDataURL(file);
+});
 
 // =========================
-// 核心分析
+// AI分析 + 优化
 // =========================
 
-function analyze(img) {
+function analyze() {
+
+  if (!img) return;
 
   canvas.width = size;
   canvas.height = size;
 
+  // 🧠 AI简化（模拟）
+  ctx.filter = "contrast(1.2) saturate(0.8)";
   ctx.drawImage(img, 0, 0, size, size);
 
   const data = ctx.getImageData(0, 0, size, size).data;
 
-  let usedColors = new Set();
+  let colorSet = new Set();
   let complexity = 0;
 
   let idx = 0;
@@ -73,17 +71,17 @@ function analyze(img) {
 
       let i = idx * 4;
 
-      let c = matchColor(
+      let color = matchColor(
         data[i],
         data[i+1],
         data[i+2]
       );
 
-      usedColors.add(c);
+      colorSet.add(color);
 
-      if (c !== "#ffffff") complexity++;
+      if (color !== "#ffffff") complexity++;
 
-      ctx.fillStyle = c;
+      ctx.fillStyle = color;
       ctx.fillRect(x, y, 1, 1);
 
       idx++;
@@ -91,31 +89,38 @@ function analyze(img) {
   }
 
   // =========================
-  // 成功率模型
+  // 🧠 成功率模型（结构版）
   // =========================
 
-  let colorCount = usedColors.size;
+  let colorCount = colorSet.size;
 
-  let score = 100 - colorCount * 4 - complexity * 0.1;
+  let score =
+    100 -
+    colorCount * 4 -
+    complexity * 0.1;
+
   score = Math.max(0, Math.round(score));
 
   rate.innerText = score + "%";
 
   // =========================
-  // AI建议
+  // 💡 AI建议
   // =========================
 
   let tips = [];
 
   if (colorCount > 8) {
-    tips.push("建议减少颜色到 8 种以内");
+    tips.push("🎨 建议减少颜色到 8 种以内");
   }
 
   if (complexity > 500) {
-    tips.push("建议简化图案细节");
+    tips.push("🧩 建议简化结构细节");
   }
 
-  tips.push(score > 60 ? "✅ 可以制作" : "⚠️ 建议优化后再做");
+  tips.push(score > 60
+    ? "✅ 可以制作"
+    : "⚠️ 建议优化后再制作"
+  );
 
   tipsBox.innerHTML = tips.join("<br>");
 }
@@ -131,9 +136,9 @@ function matchColor(r,g,b) {
 
   for (let c of palette) {
 
-    let cr = parseInt(c.substr(1,2),16);
-    let cg = parseInt(c.substr(3,2),16);
-    let cb = parseInt(c.substr(5,2),16);
+    let cr = parseInt(c.slice(1,3),16);
+    let cg = parseInt(c.slice(3,5),16);
+    let cb = parseInt(c.slice(5,7),16);
 
     let d = (r-cr)**2 + (g-cg)**2 + (b-cb)**2;
 
@@ -144,4 +149,30 @@ function matchColor(r,g,b) {
   }
 
   return best;
+}
+
+// =========================
+// PDF生成
+// =========================
+
+function generatePDF() {
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+
+  pdf.setFontSize(16);
+  pdf.text("🧩 DIY Maker AI 制作方案", 10, 10);
+
+  pdf.setFontSize(12);
+  pdf.text("成功率：" + rate.innerText, 10, 25);
+
+  pdf.text("制作建议：", 10, 40);
+  pdf.text("- 控制颜色在8种以内", 10, 50);
+  pdf.text("- 简化结构复杂度", 10, 60);
+
+  const imgData = canvas.toDataURL("image/png");
+
+  pdf.addImage(imgData, "PNG", 10, 70, 120, 120);
+
+  pdf.save("DIY-plan.pdf");
 }
