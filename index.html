@@ -2,46 +2,69 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>DIY Maker AI - 拼豆优化器</title>
+  <title>DIY Maker AI</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-  <h2>🧩 DIY Maker AI - 拼豆优化器</h2>
-  <p>上传图片 → AI优化 → 判断是否可制作</p>
-</header>
+<div class="app">
 
-<div class="container">
+  <!-- 左侧栏 -->
+  <aside class="sidebar">
+    <div class="logo">🧩 DIY Maker AI</div>
 
-  <!-- 左侧：上传 -->
-  <div class="panel">
-    <h3>📤 上传图片</h3>
-    <input type="file" id="upload">
+    <button class="menu active">拼豆模式</button>
+    <button class="menu">十字绣模式</button>
+    <button class="menu">乐高模式</button>
+    <button class="menu">像素画</button>
 
-    <canvas id="inputCanvas"></canvas>
-  </div>
+    <div class="upload-box">
+      <input type="file" id="upload">
+      <label>📤 上传图片</label>
+    </div>
+  </aside>
 
-  <!-- 中间：分析 -->
-  <div class="panel">
-    <h3>📊 AI分析</h3>
+  <!-- 主内容 -->
+  <main class="main">
 
-    <div id="scoreBox">等待上传...</div>
-    <div id="tips"></div>
+    <h1>AI 图片优化 & 可制作性分析</h1>
 
-    <div id="stats"></div>
-  </div>
+    <div class="content">
 
-  <!-- 右侧：优化结果 -->
-  <div class="panel">
-    <h3>✨ AI优化结果</h3>
+      <!-- 原图 -->
+      <div class="card">
+        <h3>原始图片</h3>
+        <img id="origin" />
+      </div>
 
-    <canvas id="outputCanvas"></canvas>
-  </div>
+      <!-- 结果 -->
+      <div class="card">
+        <h3>AI 优化结果</h3>
+        <canvas id="canvas"></canvas>
+      </div>
+
+      <!-- 分析 -->
+      <div class="panel">
+
+        <div class="score">
+          <div id="rate">0%</div>
+          <p>成功率</p>
+        </div>
+
+        <div class="tips" id="tips"></div>
+
+        <button onclick="optimize()">重新优化</button>
+
+      </div>
+
+    </div>
+
+  </main>
 
 </div>
 
 <script src="app.js"></script>
+
 </body>
 </html>
